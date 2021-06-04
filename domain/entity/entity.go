@@ -1,9 +1,10 @@
 package entity
 
 import (
+	"ddd-demo/infrastructure/auth"
+	"github.com/badoux/checkmail"
 	"html"
 	"strings"
-	"github.com/badoux/checkmail"
 	"time"
 )
 
@@ -18,15 +19,28 @@ type User struct {
 	DeletedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"deleted_at"`
 }
 
+type Food struct {
+	ID        int64     `gorm:"primary_key:auto_increment" json:"id"`
+	FoodName string    `gorm:"size:100" json:"food_name"`
+	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	DeletedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"deleted_at"`
+}
+
 type PublicUser struct {
 	ID        int64  `gorm:"primary_key:auto_increment" json:"id"`
 	FirstName string `gorm:"size:100;not null;" json:"first_name"`
 	LastName  string `gorm:"size:100;not null;" json:"last_name"`
 }
 
+type PublicFood struct {
+	ID        int64  `gorm:"primary_key:auto_increment" json:"id"`
+	FoodName string `gorm:"size:100;not null;" json:"food_name"`
+}
+
 //BeforeSave is a  gorm hook
 func (u *User) BeforeSave() error {
-	hashPassword, err := security.Hash(u.Password)
+	hashPassword, err := auth.Encrypt(u.Password)
 	if err != nil {
 		return err
 	}
@@ -35,6 +49,7 @@ func (u *User) BeforeSave() error {
 }
 
 type Users []User
+type Foods []Food
 
 //So that we dont expose the user's email address and password to the world
 func (users Users) PublicUsers() []interface{} {
@@ -45,6 +60,20 @@ func (users Users) PublicUsers() []interface{} {
 	return result
 }
 
+//So that we dont expose the user's email address and password to the world
+func (foods Foods) PublicFoods() []interface{} {
+	result := make([]interface{}, len(foods))
+	for index, food := range foods {
+		result[index] = food.PublicFood()
+	}
+	return result
+}
+func (f *Food) PublicFood() interface{}  {
+	return &PublicFood{
+		ID: f.ID,
+		FoodName: f.FoodName,
+	}
+}
 //So that we dont expose the user's email address and password to the world
 func (u *User) PublicUser() interface{} {
 	return &PublicUser{

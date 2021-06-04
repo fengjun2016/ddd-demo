@@ -10,16 +10,14 @@ import (
 
 type Users struct {
 	us application.UserAppInterface
-	rd auth.AuthInterface
-	tk auth.TokenInterface
+	//rd auth.AuthInterface
+	//tk auth.TokenInterface
 }
 
 //Users constructor
-func NewUsers(us application.UserAppInterface, rd auth.AuthInterface, tk auth.TokenInterface) *Users {
+func NewUsers(us application.UserAppInterface) *Users {
 	return &Users{
 		us: us,
-		rd: rd,
-		tk: tk,
 	}
 }
 
@@ -42,15 +40,18 @@ func (u *Users) SaveUser(c *gin.Context) {
 }
 
 func (u *Users) GetUsers(c *gin.Context) {
-	users := entity.User{} //customize user
+	users := entity.Users{} //customize user
 	var err error
 	//us, err = application.UserApp.GetUsers()
-	users, err = s.us.GetUsers()
+	users, err = u.us.GetUsers()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, users.PublicUser())
+	c.JSON(
+		http.StatusOK,
+		users.PublicUsers(),
+	)
 }
 
 func (u *Users) GetUser(c *gin.Context) {
@@ -60,7 +61,7 @@ func (u *Users) GetUser(c *gin.Context) {
 		return
 	}
 
-	user, err := s.us.GetUser(userId)
+	user, err := u.us.GetUser(userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return

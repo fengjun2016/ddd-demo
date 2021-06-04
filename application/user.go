@@ -1,5 +1,10 @@
 package application
 
+import (
+	"ddd-demo/domain/entity"
+	"ddd-demo/domain/repository"
+)
+
 type userApp struct {
 	us repository.UserRepository
 }

@@ -1,9 +1,10 @@
 package persistence
 
 import (
+	"ddd-demo/app"
 	"ddd-demo/domain/entity"
 	"ddd-demo/domain/repository"
-	"fmt"
+	"github.com/jinzhu/gorm"
 )
 
 type Repositories struct {
@@ -12,9 +13,10 @@ type Repositories struct {
 	db   *gorm.DB
 }
 
-func NewRepositories(Dbdriver, DbUser, DbPassword, DbPort, DbName string) (*Repositories, error) {
-	DBURL := fmt.Sprintf("host=%s port=%s dbname=%s sslmode=disable password=%s", DbHost, DbPort, DbUser, DbName, DbPassword)
-	db, err := gorm.Open(Dbdriver, DBURL)
+func NewRepositories(DbDriver, DbUser, DbPassword, DbPort, DbHost,DbName string) (*Repositories, error) {
+	//DbUrl := fmt.Sprintf("host=%s port=%s dbname=%s sslmode=disable password=%s", DbHost, DbPort, DbUser, DbName, DbPassword)
+	mysqlArgs := app.Config.DB.User + ":" + app.Config.DB.Password + "@tcp(" + app.Config.DB.Host + ":" + app.Config.DB.Port + ")/" + app.Config.DB.Name + "?charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true"
+	db, err := gorm.Open(DbDriver, mysqlArgs)
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +29,12 @@ func NewRepositories(Dbdriver, DbUser, DbPassword, DbPort, DbName string) (*Repo
 	}, nil
 }
 
-//closes the database connectio
+//Close the database connection
 func (r *Repositories) Close() error {
-	return s.db.Close()
+	return r.db.Close()
 }
 
-//This migrate all tables
-func (r *Repositories) Automigrate() error {
-	return s.db.AutoMigrate(&entity.User{}, &entity.Food{}).Error
+//AutoMigrate all tables
+func (r *Repositories) AutoMigrate() error {
+	return r.db.AutoMigrate(&entity.User{}, &entity.Food{}).Error
 }

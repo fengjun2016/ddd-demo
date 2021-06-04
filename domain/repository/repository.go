@@ -10,5 +10,7 @@ type UserRepository interface {
 }
 
 type FoodRepository interface {
-
+	SaveFood(*entity.Food) (*entity.Food, map[string]string)
+	GetFood(int64) (*entity.Food, error)
+	GetFoods() ([]entity.Food, error)
 }

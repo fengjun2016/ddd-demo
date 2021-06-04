@@ -1,0 +1,112 @@
+http:
+  domain: "0.0.0.0"
+  port: 60000
+jwt:
+  secret: "renyou-api"
+  expire_time: 2592000 #3600 * 24 * 30 token有效期30天
+  issuer: "renyou"
+system:
+  env: "develop"
+  universal_pass: "renyou$$10000"
+admin:
+  super_admin: "kuipservice@kuipgroup.com"
+  super_admin_pass: "renyou$$10000"
+  init_admin_pass: "admin"
+adminjwt:
+  secret: "admin-renyou-api"
+  expire_time: 604800 #3600 * 24 * 7 token有效期7天
+  issuer: "renyou"
+captcha:
+  img_height: 80
+  img_width: 240
+  key_long: 5
+db:
+  host: "127.0.0.1"
+  port: "3306"
+  user: "root"
+  password: ""
+  name: "renyou-api"
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  pool_size: 10
+elastic:
+  addr: "http://127.0.0.1:9200"
+
+qiniu:
+  access_key: "key"
+  secret_key: "key"
+  bucket: "kuip-api"
+  domain: "kuip-api.kuipmake.com"
+  file_domain: "https://kuip-file.kuipmake.com"
+  callback_url: "kuip-api.kuipmake.com/v1/qiniu/callback"
+
+wx:
+  access_token: "token"
+
+alipay:
+  is_prod: false   # 是否正式环境
+  app_id: ""
+  app_private_key: ""
+  ali_public_key: ""
+  notify_url: "回调地址"
+  return_rul: "支付后，重定向的地址"
+
+wechatpay:
+  is_prod: false
+  app_id: "wx59ce06500f2403e4"
+  mch_id: ""
+  api_key: ""
+  notify_url: ""
+  return_url: ""
+
+wechat:
+  app_id: "wx59ce06500f2403e4"
+  secret: "566050e29242afd612f0605a21cd93f0"
+  api_request_url: "https://api.weixin.qq.com/cgi-bin"
+
+kuaidi100:
+  key: "YhNwdfpF4246"
+  auto_number_request_url: "http://www.kuaidi100.com/autonumber/auto"
+  subscribe_request_url: "http://www.kuaidi100.com/poll"
+  subscribe_callback_request_url: "http://renyou-api.kuipmake.com/kuaidi100/callback"
+
+redisCountDown:
+  auto_cancel: 86400 # 24 * 60 * 60 24小时
+  auto_finish: 1296000  #15 * 24 * 60 * 60 15天
+
+
+operatingActivity:
+  key_name: "phone-shell"
+  activity_on: "on"
+  activity_off: "off"
+
+rabbitmq:
+  host: "127.0.0.1"
+  port: "5672"
+  user: "root"
+  password: "123456"
+  vhost: "renyou-api"
+
+inviteCode:
+  salt: "this is my salt"
+  alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY"
+
+cacheProduct:
+  cache_prefix: "renyou-api-product"
+  cache_prefix_for_list: "renyou-api-product-list"
+
+push:
+  url: "https://cloudpush.aliyuncs.com"
+  access_key_id: "LTAI4GAmFPBHuYLArrGqdjtP"
+  access_key_secret: "hErcZ3Hml3Z5JqUzjRRYE4UuZWOaYl"
+  app_chat_android_key: "333347259"
+  app_chat_ios_key: "333347381"
+  app_renyou_android_key: "27572731"
+  app_renyou_ios_key: "27571128"
+
+rpc:
+  domain: ""
+  port: ""
+
+
